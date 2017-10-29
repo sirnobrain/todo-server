@@ -12,18 +12,15 @@ let TodoSchema = new mongoose.Schema({
 		required: true
 	},
 	tags: {
-		type: [{type: String}]
+		type: [String]
 	},
 	created_at: {
 		type: Date,
-		required: true
+		default: Date.now
 	},
 	done: {
 		type: Boolean,
-		required: true
-	},
-	done_at: {
-		type: Date
+		default: false
 	}
 });
 
