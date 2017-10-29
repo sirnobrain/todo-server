@@ -12,7 +12,6 @@ class FbUser {
 	static getNameAndId(fbToken, fbId) {
 		return new Promise((resolve, reject) => {
 			FB.api('me', {fields: ['id', 'name'], access_token: fbToken }, nameAndId => {
-				console.log(nameAndId);
 				if (nameAndId.id === fbId) resolve(nameAndId);
 				else reject('Token and Id Do Not Match');
 			});
