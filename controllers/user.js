@@ -13,11 +13,11 @@ class User {
 		})
 		.then(jwtoken => {
 			const data = {jwtoken};
-			const resp = genResponse(200, 'retireve token from server', data, null);
+			const resp = genResponse(200, `retireve token from server`, data, null);
 			res.status(200).send(resp);
 		})
 		.catch(err => {
-			const resp = genResponse(500, 'failed to retrieve token from server', null, err);
+			const resp = genResponse(500, `failed to retrieve token from server`, null, err);
 			res.status(500).send(resp);
 		});
 	}
@@ -32,16 +32,26 @@ class User {
 
 		models.Todo.create(todo)
 		.then(todoCreated => {
-			const resp = genResponse(200, 'retireve token from server', todoCreated, null);
+			const resp = genResponse(200, `create new todo`, todoCreated, null);
 			res.status(200).send(resp);
 		})
 		.catch(err => {
-			const resp = genResponse(500, 'failed to create todo', null, err);
+			const resp = genResponse(500, `failed to create new todo`, null, err);
 			res.status(500).send(resp);
 		})
 	}
 
-	static readAllTodos(req, res) {}
+	static readAllTodos(req, res) {
+		models.Todo.find({fb_id: req.headers.user_fb_id}).exec()
+		.then(todos => {
+			const resp = genResponse(200, `retireve user ${req.headers.user_fb_id} todos`, todos, null);
+			res.status(200).send(resp);
+		})
+		.catch(err => {
+			const resp = genResponse(500, `failed to retrieve user ${req.headers.user_fb_id} todos`, null, err);
+			res.status(500).send(resp);
+		})
+	}
 
 	static updateTodo(req, res) {}
 
