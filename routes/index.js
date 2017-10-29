@@ -12,4 +12,6 @@ router.get('/', verifyUser, controllers.User.readAllTodos);
 
 router.post('/', verifyUser, controllers.User.createTodo);
 
+router.put('/', verifyUser, controllers.User.updateTodo);
+
 module.exports = router;

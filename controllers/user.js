@@ -53,7 +53,20 @@ class User {
 		})
 	}
 
-	static updateTodo(req, res) {}
+	static updateTodo(req, res) {
+		if (req.body.tags) req.body.tags = req.body.tags.split(' ');
+		
+		models.Todo.updateOne({fb_id: req.headers.user_fb_id, _id: req.body._id}, req.body).exec()
+		.then(updated => {
+			if (updated.n === 0 && !req.body._id) return Promise.reject('Missing Todo Id: nothing updated');
+			const resp = genResponse(200, `update todo with id ${req.body._id}`, updated, null);
+			res.status(200).send(resp);
+		})
+		.catch(err => {
+			const resp = genResponse(500, `failed to update todo with id ${req.body._id}`, null, err);
+			res.status(500).send(resp);
+		});
+	}
 
 	static deleteTodo(req, res) {}
 }
