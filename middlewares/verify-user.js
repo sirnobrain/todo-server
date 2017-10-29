@@ -25,7 +25,7 @@ module.exports = (req, res, next) => {
 			}
 		});
 	} else {
-		const resp = genResponse(400, 'have not signed up/signed in', null, 'Authentication error: no token found';
+		const resp = genResponse(400, 'have not signed up/signed in', null, 'Authentication error: no token found');
 		res.status(400).send(resp);
 	}
 };
