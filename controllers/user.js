@@ -8,9 +8,7 @@ class User {
 	static signin(req, res) {
 		models.FbUser.getNameAndId(req.headers.fb_token, req.headers.fb_id)
 		.then(fbNameAndId => {
-			/*
-			fbNameAndId => { id, name }
-			*/
+			// fbNameAndId => { id, name }
 			return genJwtoken(fbNameAndId.id);
 		})
 		.then(jwtoken => {
@@ -23,6 +21,31 @@ class User {
 			res.status(500).send(resp);
 		});
 	}
+
+	static createTodo(req, res) {
+		const tags = req.body.tags ? req.body.tags.split(' ') : null;
+		const todo = {
+			fb_id: req.headers.user_fb_id,
+			text: req.body.text,
+			tags: tags
+		}
+
+		models.Todo.create(todo)
+		.then(todoCreated => {
+			const resp = genResponse(200, 'retireve token from server', todoCreated, null);
+			res.status(200).send(resp);
+		})
+		.catch(err => {
+			const resp = genResponse(500, 'failed to create todo', null, err);
+			res.status(500).send(resp);
+		})
+	}
+
+	static readAllTodos(req, res) {}
+
+	static updateTodo(req, res) {}
+
+	static deleteTodo(req, res) {}
 }
 
 module.exports = User;
