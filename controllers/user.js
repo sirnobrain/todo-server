@@ -7,8 +7,11 @@ const genJwtoken = require('./../helpers/generate-jwtoken');
 class User {
 	static signin(req, res) {
 		models.FbUser.getNameAndId(req.headers.fb_token, req.headers.fb_id)
-		.then(FbNameAndId => {
-			return genJwtoken(FbNameAndId);
+		.then(fbNameAndId => {
+			/*
+			fbNameAndId => { id, name }
+			*/
+			return genJwtoken(fbNameAndId.id);
 		})
 		.then(jwtoken => {
 			const data = {jwtoken};
