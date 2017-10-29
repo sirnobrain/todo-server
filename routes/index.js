@@ -9,7 +9,11 @@ const router = express.Router();
 
 router.get('/signin', controllers.User.signin);
 
+// get all todos with 'done' property equals to false
 router.get('/', verifyUser, controllers.User.readAllTodos);
+
+// get all todos with 'done' property equals to true
+router.get('/archives', verifyUser, controllers.User.readAllArchives);
 
 router.post('/', verifyUser, controllers.User.createTodo);
 
