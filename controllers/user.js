@@ -42,7 +42,7 @@ class User {
 	}
 
 	static readAllTodos(req, res) {
-		models.Todo.find({fb_id: req.headers.user_fb_id}).exec()
+		models.Todo.find({fb_id: req.headers.user_fb_id, done: false}).exec()
 		.then(todos => {
 			const resp = genResponse(200, `retireve user ${req.headers.user_fb_id} todos`, todos, null);
 			res.status(200).send(resp);
@@ -53,8 +53,21 @@ class User {
 		})
 	}
 
+	static readAllArchives(req, res) {
+		models.Todo.find({fb_id: req.headers.user_fb_id, done: true}).exec()
+		.then(archives => {
+			const resp = genResponse(200, `retireve user ${req.headers.user_fb_id} archives`, archives, null);
+			res.status(200).send(resp);
+		})
+		.catch(err => {
+			const resp = genResponse(500, `failed to retrieve user ${req.headers.user_fb_id} archives`, null, err);
+			res.status(500).send(resp);
+		});
+	}
+
 	static updateTodo(req, res) {
 		if (req.body.tags) req.body.tags = req.body.tags.split(' ');
+		req.body.updated_at = new Date().toISOString();
 
 		models.Todo.updateOne({fb_id: req.headers.user_fb_id, _id: req.body._id}, req.body).exec()
 		.then(updated => {
