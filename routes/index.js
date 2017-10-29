@@ -14,4 +14,6 @@ router.post('/', verifyUser, controllers.User.createTodo);
 
 router.put('/', verifyUser, controllers.User.updateTodo);
 
+router.delete('/', verifyUser, controllers.User.deleteTodo);
+
 module.exports = router;
