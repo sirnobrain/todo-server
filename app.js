@@ -17,4 +17,6 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use('/', index);
 
-app.listen(3000, console.log('todo server listening on port 3000 :)'));
+const port = process.env.PORT || 3000;
+
+app.listen(port, console.log(`todo server listening on port ${port}`));
