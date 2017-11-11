@@ -14,18 +14,13 @@ let TodoSchema = new mongoose.Schema({
 	tags: {
 		type: [String]
 	},
-	created_at: {
-		type: Date,
-		default: Date.now
-	},
-	updated_at: {
-		type: Date,
-		default: null
-	},
 	done: {
 		type: Boolean,
 		default: false
 	}
+}, 
+{
+	timestamps: true
 });
 
 module.exports = mongoose.model('Todo', TodoSchema);

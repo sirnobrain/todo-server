@@ -17,8 +17,8 @@ router.get('/archives', verifyUser, controllers.User.readAllArchives);
 
 router.post('/', verifyUser, controllers.User.createTodo);
 
-router.put('/', verifyUser, todoIdChecker, controllers.User.updateTodo);
+router.put('/:id', verifyUser, todoIdChecker, controllers.User.updateTodo);
 
-router.delete('/', verifyUser, todoIdChecker, controllers.User.deleteTodo);
+router.delete('/:id', verifyUser, controllers.User.deleteTodo);
 
 module.exports = router;

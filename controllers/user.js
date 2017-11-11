@@ -23,7 +23,7 @@ class User {
 	}
 
 	static createTodo(req, res) {
-		const tags = req.body.tags ? req.body.tags.split(' ') : null;
+		const tags = req.body.tags.length > 0 ? req.body.tags.split(';') : [];
 		const todo = {
 			fb_id: req.headers.user_fb_id,
 			text: req.body.text,
@@ -66,28 +66,27 @@ class User {
 	}
 
 	static updateTodo(req, res) {
-		if (req.body.tags) req.body.tags = req.body.tags.split(' ');
-		req.body.updated_at = new Date().toISOString();
+		// if (req.body.tags.length > 0) req.body.tags = req.body.tags.split(';');
 
-		models.Todo.updateOne({fb_id: req.headers.user_fb_id, _id: req.body._id}, req.body).exec()
+		models.Todo.updateOne({fb_id: req.headers.user_fb_id, _id: req.params.id}, req.body).exec()
 		.then(updated => {
-			const resp = genResponse(200, `update todo with id ${req.body._id}`, updated, null);
+			const resp = genResponse(200, `update todo with id ${req.params.id}`, updated, null);
 			res.status(200).send(resp);
 		})
 		.catch(err => {
-			const resp = genResponse(500, `failed to update todo with id ${req.body._id}`, null, err);
+			const resp = genResponse(500, `failed to update todo with id ${req.params.id}`, null, err);
 			res.status(500).send(resp);
 		});
 	}
 
 	static deleteTodo(req, res) {
-		models.Todo.deleteOne({fb_id: req.headers.user_fb_id, _id: req.body._id})
+		models.Todo.deleteOne({fb_id: req.headers.user_fb_id, _id: req.params.id})
 		.then(deleted => {
-			const resp = genResponse(200, `delete todo with id ${req.body._id}`, deleted, null);
+			const resp = genResponse(200, `delete todo with id ${req.params.id}`, deleted, null);
 			res.status(200).send(resp);
 		})
 		.catch(err => {
-			const resp = genResponse(500, `failed to delete todo with id ${req.body._id}`, null, err);
+			const resp = genResponse(500, `failed to delete todo with id ${req.params.id}`, null, err);
 			res.status(500).send(resp);
 		});
 	}
